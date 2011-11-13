@@ -1,0 +1,129 @@
+<!doctype html>
+<meta charset=utf-8>
+
+<title>Editor</title>
+
+<link rel=stylesheet/less href=style/default.less>
+<script src=third-party/less-1.1.3.min.js></script>
+
+<script src=//ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js></script>
+<script src=third-party/bootstrap/js/bootstrap-alerts.js></script>
+<script src=third-party/bootstrap/js/bootstrap-buttons.js></script>
+<script src=third-party/bootstrap/js/bootstrap-modal.js></script>
+<script src=third-party/bootstrap/js/bootstrap-twipsy.js></script>
+<script src=third-party/bootstrap/js/bootstrap-popover.js></script>
+<script src=third-party/bootstrap/js/bootstrap-tabs.js></script>
+<script src=script/editor.js></script>
+
+<nav class=topbar>
+  <div class=fill>
+    <div class=container>
+      <a class=brand href=>Site Editor</a>
+      <ul class=nav>
+        <li class=pages-link><a href=#>Pages</a>
+        <li class=structure-link><a href=#>Structure</a>
+      </ul>
+      <div class=pull-right>
+        <div class=signed-out>
+          <form name=sign-in>
+            <input class=input-small name=username placeholder='User name'>
+            <input class=input-small name=password type=password placeholder=Password>
+            <button class=btn data-loading-text='Signing in…'>Sign in</button>
+          </form>
+        </div>
+        <div class=signed-in>
+          <form name=sign-out>
+            Signed in as <a class=username></a>
+            <button class=btn data-loading-text='Signing out…'>Sign out</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class=container>
+  <div class=messages>
+  </div>
+  <div class=structure>
+    <form name=structure-edit class=form-stacked>
+      <fieldset>
+        <legend>Edit site structure</legend>
+        <div class=clearfix>
+          <label for=structure-editor>Structure</label>
+          <div class=input>
+            <textarea id=structure-editor name=structure class=xxlarge rows=25></textarea>
+            <span class=help-block>Use JSON.</span>
+          </div>
+        </div>
+      </fieldset>
+      <p><strong>Pages not linked:</strong> <span class=pages-not-linked></span>
+      <div class=actions>
+        <button class='btn primary' data-loading-text=Saving… disabled>Save changes</button>
+        <a class='btn tidy-json'>Tidy up JSON</a>
+      </div>
+    </form>
+  </div>
+  <div class=pages>
+    <div class=row>
+      <div class='span4 list'>
+        <h3>Pages</h3>
+        <ul>
+        </ul>
+        <p><a class='btn new-page'>New page…</a>
+      </div>
+      <div class='span12 edit'>
+        <p class=loading>Loading…
+        <form name=edit class=form-stacked>
+          <fieldset>
+            <legend>Edit ‘<span class=id></span>’</legend>
+            <div class=clearfix>
+              <label for=title-field>Title</label>
+              <div class=input>
+                <input id=title-field name=title class=xxlarge>
+              </div>
+            </div>
+            <div class=clearfix>
+              <label for=editor>Content</label>
+              <div class=input>
+                <textarea id=editor name=content class=xxlarge rows=25></textarea>
+                <span class=help-block>Use HTML.</span>
+              </div>
+            </div>
+            <div class=clearfix>
+              <label for=summary-field>Summary</label>
+              <div class=input>
+                <textarea id=summary-field name=summary class=xxlarge rows=2></textarea>
+                <span class=help-block>Used by search engines. Use relevant keywords.</span>
+              </div>
+            </div>
+            <div class=clearfix>
+              <label for=link-field>Link to more information</label>
+              <div class=input>
+                <input id=link-field type=url name=link class=xxlarge placeholder=http://>
+              </div>
+            </div>
+            <div class=clearfix>
+              <label for=extra-field>Extra data</label>
+              <div class=input>
+                <textarea id=extra-field name=extra class=xxlarge rows=3></textarea>
+                <span class=help-block>This should be valid JSON.</span>
+              </div>
+            </div>
+            <div class=clearfix>
+              <label for=attachments>Attachments</label>
+              <div class=input>
+                <div id=attachments></div>
+                <span class=help-block>Drag a file and drop it above to upload. Drag the file to the editor to place its address.</span>
+              </div>
+            </div>
+          </fieldset>
+          <div class=actions>
+            <button class='btn primary' data-loading-text=Saving… disabled>Save</button>
+            <a class='btn futon-link' target=_blank>Open in Futon</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
