@@ -1,0 +1,58 @@
+<!doctype html>
+<meta charset=utf-8>
+
+<title>New page</title>
+
+<link rel=stylesheet/less href=style/common.less>
+<script src=third-party/less-1.1.3.min.js></script>
+<script src=third-party/jquery-1.7.1.min.js></script>
+<script src=third-party/request.jquery.js></script>
+<script src=script/common.js></script>
+
+<form id=new-page>
+  <fieldset>
+    <p>
+      <label>
+        Page ID
+        <input name=pageid autofocus>
+      </label>
+      <span class=help>This is used to create the URL.</span>
+  </fieldset>
+  <p><button class=primary>Create page</button>
+</form>
+
+<script>
+  $(function() {
+    $('#new-page').submit(function() {
+      $(this).find('input, button').attr('disabled', true);
+      $(this).find('button.primary').text('Creating page…');
+
+      var id = this.pageid.value;
+      if (!id) {
+        alert('Please enter a page ID.');
+        return;
+      }
+
+      $.request({
+        method: 'PUT',
+        url: 'api/' + id,
+        json: true,
+        body: {
+          type: 'page'
+        }
+      }, function(err, resp, body) {
+        if (resp.status == 409) {
+          alert('This page already exists.');
+          $('#new-page').find('input, button').attr('disabled', false);
+          $('#new-page').find('button.primary').text('Create page');
+        }
+
+        if (resp.status == 201) {
+          location.href = 'edit-page.html?' + id;
+        }
+      });
+
+      return false;
+    });
+  });
+</script>

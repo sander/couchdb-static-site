@@ -1,4 +1,4 @@
 function(doc) {
-  if (doc.content != undefined)
+  if (doc.type == 'page')
     emit(doc._id, doc.title || null);
 }

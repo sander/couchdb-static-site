@@ -1,7 +1,7 @@
 <!doctype html>
 <meta charset=utf-8>
 
-<title>Site editor</title>
+<title>Sign out</title>
 
 <link rel=stylesheet/less href=style/common.less>
 <script src=third-party/less-1.1.3.min.js></script>
@@ -9,4 +9,16 @@
 <script src=third-party/request.jquery.js></script>
 <script src=script/common.js></script>
 
-<p>Welcome.
+<p>You are being signed out…
+
+<script>
+  $(function() {
+    $.request({
+      url: '/_session',
+      method: 'DELETE',
+      json: true
+    }, function(err, resp, body) {
+      location.href = '.';
+    });
+  });
+</script>

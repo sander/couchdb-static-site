@@ -1,0 +1,57 @@
+<!doctype html>
+<meta charset=utf-8>
+
+<title>Edit page</title>
+
+<link rel=stylesheet/less href=style/common.less>
+<script src=third-party/less-1.1.3.min.js></script>
+<script src=third-party/jquery-1.7.1.min.js></script>
+<script src=third-party/request.jquery.js></script>
+<script src=script/common.js></script>
+
+<script src=script/edit-page.js></script>
+
+<nav class=toolbar>
+  <p>
+    <button class=primary form=edit-form>Save</button>
+    <a class='futon-link button' href=>Open in Futon</a>
+</nav>
+
+<form id=edit-form>
+  <fieldset>
+    <p>
+      <label>
+        Title
+        <input name=title autofocus>
+      </label>
+    <p>
+      <label>
+        Contents
+        <textarea name=content></textarea>
+      </label>
+      <span class=help>Use HTML.</span>
+    <p>
+      <label>
+        Attachments
+        <span class=attachments></span>
+      </label>
+      <span class=help>Drag a file and drop it above to upload. Drag the file to the editor to place its address.</span>
+    <p>
+      <label>
+        Summary
+        <textarea name=summary></textarea>
+      </label>
+      <span class=help>Used by search engines. Use relevant keywords.</span>
+    <p>
+      <label>
+        Link to more information
+        <input type=url name=link placeholder=http://>
+      </label>
+    <p>
+      <label>
+        Extra data
+        <textarea name=extra></textarea>
+      </label>
+      <span class=help>This should be valid JSON.</span>
+  </fieldset>
+</form>
