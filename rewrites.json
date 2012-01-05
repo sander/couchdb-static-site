@@ -1,0 +1,19 @@
+[
+  { "from": "/editor/", "to": "../../_design/editor/_rewrite/" },
+  { "from": "/editor/*", "to": "../../_design/editor/_rewrite/*" },
+
+  { "from": "/api", "to": "../../" },
+  { "from": "/api/*", "to": "../../*" },
+
+  { "from": "/media/_design/*", "to": "*" },
+  { "from": "/media/:page/*", "to": "../../:page/media/*" },
+
+  { "from": "/favicon.ico", "to": "img/favicon.png" },
+
+  { "from": "/sitemap.xml", "to": "_list/sitemap/sitemap" },
+
+  { "from": "/", "to": "_list/browse/pages",
+    "query": { "startkey": ["*index", ""], "endkey": ["*index", {}] } },
+  { "from": "/:page", "to": "_list/browse/pages",
+    "query": { "startkey": [":page"], "endkey": [":page", {}] } },
+]
