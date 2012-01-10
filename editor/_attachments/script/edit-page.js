@@ -110,8 +110,10 @@ $(function() {
     $('<span class=name>').text(name).appendTo(elt);
 
     elt.bind('dragstart', function(evt) {
+      var id = currentDoc._id;
+      if (id == '*index') id = '_index';
       name = name.split('/')[1];
-      evt.originalEvent.dataTransfer.setData('Text', 'media/' + currentDoc._id + '/' + name);
+      evt.originalEvent.dataTransfer.setData('Text', 'media/' + id + '/' + name);
     });
   }
 
