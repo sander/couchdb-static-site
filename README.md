@@ -1,7 +1,6 @@
-Site editor 
-===========
+couchdb-static-site
+===================
 
-This is the author side of the CouchDB-backed static website system.
-The visitor side is [site-viewer](https://github.com/sander/site-viewer).
+CouchDB-backed static website system.
 
 Copyright © 2011 Sander Dijkhuis. All rights reserved.
