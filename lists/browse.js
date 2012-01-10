@@ -14,9 +14,9 @@ function(head, req) {
   start({ headers: { 'Content-Type': 'text/html; charset=utf-8' } });
 
   while (row = getRow()) {
-    if (row.key[1] == 'menus') menus = row.value;
-    else if (row.key[1] == 'page') doc = row.value;
-    else if (row.key[1] == 'template') template = row.value;
+    if (row.key[1] == 'site_data') template = row.doc.templates.default;
+    else if (row.key[1] == 'menus') menus = row.value;
+    else if (row.key[1] == 'page') doc = row.doc;
   }
 
   if (!menus) menus = [];
@@ -57,5 +57,5 @@ function(head, req) {
     stash.childmenu = childmenu;
   }
 
-  return Mustache.to_html(/*template*/this.templates.default, stash);
+  return Mustache.to_html(template, stash);
 }

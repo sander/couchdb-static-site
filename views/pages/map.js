@@ -1,9 +1,9 @@
 function(doc) {
   if (doc.type == 'page') {
     emit([doc._id, 'page'], doc);
+    emit([doc._id, 'site_data'], {_id: '*site'});
   } else if (doc._id == '*site') {
     function traverse(node, menus) {
-      emit([node.id, 'template'], doc.templates.default);
       if (node.children) {
         if (node.children) for (var i in node.children) {
           var menu = [];

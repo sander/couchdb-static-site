@@ -13,7 +13,7 @@
   { "from": "/sitemap.xml", "to": "_list/sitemap/sitemap" },
 
   { "from": "/", "to": "_list/browse/pages",
-    "query": { "startkey": ["*index", ""], "endkey": ["*index", {}] } },
+    "query": { "startkey": ["*index", ""], "endkey": ["*index", {}], "include_docs": "true" } },
   { "from": "/:page", "to": "_list/browse/pages",
-    "query": { "startkey": [":page"], "endkey": [":page", {}] } },
+    "query": { "startkey": [":page"], "endkey": [":page", {}], "include_docs": "true" } },
 ]
