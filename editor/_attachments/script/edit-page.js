@@ -50,6 +50,13 @@ $(function() {
 
     return false;
   });
+
+  $('textarea').keyup(function() {
+    if (this.scrollHeight > this.clientHeight) {
+      this.style.height = this.scrollHeight +
+        (this.offsetHeight - this.clientHeight) + 'px';
+    }
+  });
   
   var fields = $('#edit-form input, #edit-form textarea, button[form=edit-form]');
 
@@ -71,7 +78,9 @@ $(function() {
     form.find('[name=title]').val(doc.title);
     form.find('[name=content]').val(doc.content);
 
-    cm = CodeMirror.fromTextArea(form.find('[name=content]').get(0), {});
+    cm = CodeMirror.fromTextArea(form.find('[name=content]').get(0), {
+      lineWrapping: true
+    });
 
     form.find('[name=summary]').val(doc.summary);
     form.find('[name=link]').val(doc.link);
@@ -85,7 +94,7 @@ $(function() {
     delete extra.summary;
     delete extra.link;
     delete extra.type;
-    form.find('[name=extra]').val(JSON.stringify(extra, null, '  '));
+    form.find('[name=extra]').val(JSON.stringify(extra, null, '  ')).keyup();
 
     $('.futon-link').click(function() {
       $.request({
