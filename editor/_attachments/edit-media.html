@@ -1,0 +1,129 @@
+<!doctype html>
+<meta charset=utf-8>
+
+<title>Edit site media</title>
+
+<link rel=stylesheet/less href=style/common.less>
+<script src=third-party/less-1.1.3.min.js></script>
+<script src=third-party/jquery-1.7.1.min.js></script>
+<script src=third-party/request.jquery.js></script>
+<script src=script/common.js></script>
+
+<nav class=toolbar>
+</nav>
+
+<form id=edit-form>
+  <fieldset>
+    <p>
+      <label>
+        Media
+        <span class=attachments></span>
+      </label>
+      <span class=help>Drag a file and drop it above to upload.</span>
+  </fieldset>
+</form>
+
+<script>
+  $(function() {
+    var currentDoc = null;
+    var changed = false;
+    var upload = null;
+
+    var form = $('#edit-form').submit(function() {
+      var me = this;
+
+      if (upload) {
+        if (!currentDoc._attachments) currentDoc._attachments = {};
+        $.extend(currentDoc._attachments, upload);
+      }
+
+      $.ajax({
+        type: 'PUT',
+        url: 'api/' + currentDoc._id,
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(currentDoc),
+        dataType: 'json',
+        success: function(data) {
+          currentDoc._rev = data.rev;
+          changed = false;
+          if (upload) location.reload();
+          upload = null;
+        }
+      });
+
+      return false;
+    });
+
+    $.request({
+      url: 'api/*site',
+      json: true
+    }, function(err, resp, doc) {
+      currentDoc = doc;
+
+      form.find('#attachments').empty();
+      if (doc._attachments) {
+        for (var name in doc._attachments) {
+          var data = doc._attachments[name];
+          addAttachment(name, data);
+        }
+      }
+    });
+
+    function addAttachment(name, data) {
+      var url = 'api/' + currentDoc._id + '/' + name;
+      var elt = $('<a draggable>').attr({ href: url, target: '_blank' }).appendTo('.attachments');
+      if (['image/jpeg', 'image/png'].indexOf(data.content_type) != -1)
+        $('<img>').attr('src', url).appendTo(elt);
+      $('<span class=name>').text(name).appendTo(elt);
+
+      elt.bind('dragstart', function(evt) {
+        var id = currentDoc._id;
+        if (id == '*index') id = '_index';
+        if (id == '*site') id = '_site';
+        name = name.split('/')[1];
+        evt.originalEvent.dataTransfer.setData('Text', 'media/' + id + '/' + name);
+      });
+    }
+
+    $('.attachments').bind('dragover', function(evt) {
+      evt.stopPropagation();
+      evt.preventDefault();
+    }).bind('dragenter', function(evt) {
+      $(this).toggleClass('draghover', true);
+    }).bind('dragleave', function(evt) {
+      $(this).toggleClass('draghover', false);
+    }).bind('drop', function(evt) {
+      evt.stopPropagation();
+      evt.preventDefault();
+
+      var files = evt.originalEvent.dataTransfer.files;
+      var numberOfFiles = 0;
+      var addToAttachments = {};
+      for (var i = 0, f; f = files[i]; i++) {
+        var reader = new FileReader();
+
+        reader.onload = (function(theFile) {
+          return function(e) {
+            var result = e.target.result;
+            var base64 = result.substring(result.indexOf(',') + 1);
+            addToAttachments['media/' + theFile.name] = {
+              content_type: theFile.type,
+              data: base64
+            };
+
+            var n = 0; for (var i in addToAttachments) n++;
+            if (n == numberOfFiles) {
+              upload = addToAttachments;
+              changed = true;
+              $('#edit-form').submit();
+            }
+          };
+        })(f);
+
+        reader.readAsDataURL(f);
+
+        numberOfFiles++;
+      }
+    });
+  });
+</script>

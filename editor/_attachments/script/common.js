@@ -41,7 +41,7 @@ $(function() {
 
       add('edit-structure.html', 'Structure');
       add('edit-template.html', 'Template');
-
+      add('edit-media.html', 'Media');
     })();
 
     (function() {
