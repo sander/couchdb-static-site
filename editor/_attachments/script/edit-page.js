@@ -87,7 +87,18 @@ $(function() {
     delete extra.type;
     form.find('[name=extra]').val(JSON.stringify(extra, null, '  '));
 
-    $('.futon-link').attr('href', 'http://localhost:5984/_utils/document.html?site-editor/' + id);
+    $('.futon-link').click(function() {
+      $.request({
+        url: 'api/*site',
+        json: true
+      }, function(err, resp, doc) {
+        if (err) console.log(err);
+        var prefix = doc.futon_prefix;
+        if (!prefix) return alert('No Futon prefix specified!');
+        open(prefix + id);
+      });
+      return false;
+    });
 
     form.find('#attachments').empty();
     if (doc._attachments) {
