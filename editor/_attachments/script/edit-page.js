@@ -3,6 +3,7 @@ $(function() {
   var currentDoc = null;
   var changed = false;
   var upload = null;
+  var cm;
 
   var form = $('#edit-form').submit(function() {
     var me = this;
@@ -14,9 +15,10 @@ $(function() {
       if (value || (!value && currentDoc[name])) currentDoc[name] = value;
     }
     set('title');
-    set('content');
     set('summary');
     set('link');
+
+    currentDoc.content = cm.getValue();
 
     var extra = JSON.parse($(this).find('[name=extra]').val());
     $(Object.keys(extra)).each(function() {
@@ -49,13 +51,6 @@ $(function() {
     return false;
   });
   
-  $('textarea').keyup(function() {
-    if (this.scrollHeight > this.clientHeight) {
-      this.style.height = this.scrollHeight +
-        (this.offsetHeight - this.clientHeight) + 'px';
-    }
-  });
-
   var fields = $('#edit-form input, #edit-form textarea, button[form=edit-form]');
 
   $(window).bind('beforeunload', function() {
@@ -75,6 +70,9 @@ $(function() {
 
     form.find('[name=title]').val(doc.title);
     form.find('[name=content]').val(doc.content);
+
+    cm = CodeMirror.fromTextArea(form.find('[name=content]').get(0), {});
+
     form.find('[name=summary]').val(doc.summary);
     form.find('[name=link]').val(doc.link);
 
@@ -90,8 +88,6 @@ $(function() {
     form.find('[name=extra]').val(JSON.stringify(extra, null, '  '));
 
     $('.futon-link').attr('href', 'http://localhost:5984/_utils/document.html?site-editor/' + id);
-
-    form.find('textarea').keyup();
 
     form.find('#attachments').empty();
     if (doc._attachments) {

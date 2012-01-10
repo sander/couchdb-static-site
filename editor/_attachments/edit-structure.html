@@ -4,10 +4,15 @@
 <title>Edit site structure</title>
 
 <link rel=stylesheet/less href=style/common.less>
+<link rel=stylesheet href=third-party/codemirror/lib/codemirror.css>
+
 <script src=third-party/less-1.1.3.min.js></script>
 <script src=third-party/jquery-1.7.1.min.js></script>
 <script src=third-party/request.jquery.js></script>
 <script src=script/common.js></script>
+
+<script src=third-party/codemirror/lib/codemirror.js></script>
+<script src=third-party/codemirror/mode/javascript/javascript.js></script>
 
 <nav class=toolbar>
   <p>
@@ -31,6 +36,7 @@
   $(function() {
     var availablePages = [];
     var design;
+    var cm = CodeMirror.fromTextArea($('textarea[name=structure]').get(0));
 
     $('textarea').keyup(function() {
       if (this.scrollHeight > this.clientHeight) {
@@ -44,7 +50,7 @@
       json: true
     }, function(err, resp, doc) {
       design = doc;
-      $('#edit-structure [name=structure]').val(JSON.stringify(doc.site_structure, null, '  ')).keyup();
+      cm.setValue(JSON.stringify(doc.site_structure, null, '  '));
     });
 
     $.request({
@@ -59,7 +65,7 @@
     });
 
     var showNotLinked = function() {
-      var structure = JSON.parse($('textarea[name=structure]').val());
+      var structure = JSON.parse(cm.getValue());
       var linked = [];
       var notLinked = [];
       function traverse(node) {
@@ -75,15 +81,14 @@
     };
 
     $('button[name=tidy-json]').click(function() {
-      var field = $('textarea[name=structure]');
-      var json = JSON.parse(field.val());
+      var json = JSON.parse(cm.getValue());
       var tidy = JSON.stringify(json, null, '  ');
-      field.val(tidy);
+      cm.setValue(tidy);
       showNotLinked();
     });
 
     $('#edit-structure').submit(function() {
-      var structure = $('textarea[name=structure]').val();
+      var structure = cm.getValue();
       design.site_structure = JSON.parse(structure);
 
       $('button[form=edit-structure]').text('Saving changes…').attr('disabled', true);

@@ -4,10 +4,18 @@
 <title>Edit site template</title>
 
 <link rel=stylesheet/less href=style/common.less>
+<link rel=stylesheet href=third-party/codemirror/lib/codemirror.css>
+
 <script src=third-party/less-1.1.3.min.js></script>
 <script src=third-party/jquery-1.7.1.min.js></script>
 <script src=third-party/request.jquery.js></script>
 <script src=script/common.js></script>
+
+<script src=third-party/codemirror/lib/codemirror.js></script>
+<script src=third-party/codemirror/mode/xml/xml.js></script>
+<script src=third-party/codemirror/mode/css/css.js></script>
+<script src=third-party/codemirror/mode/javascript/javascript.js></script>
+<script src=third-party/codemirror/mode/htmlmixed/htmlmixed.js></script>
 
 <nav class=toolbar>
   <p>
@@ -27,24 +35,18 @@
 <script>
   $(function() {
     var design;
-
-    $('textarea').keyup(function() {
-      if (this.scrollHeight > this.clientHeight) {
-        this.style.height = this.scrollHeight +
-          (this.offsetHeight - this.clientHeight) + 'px';
-      }
-    });
+    var cm = CodeMirror.fromTextArea($('textarea[name=template]').get(0));
 
     $.request({
       url: 'api/*site',
       json: true
     }, function(err, resp, doc) {
       design = doc;
-      $('#edit-template [name=template]').val(doc.templates.default).keyup();
+      cm.setValue(doc.templates.default);
     });
 
     $('#edit-template').submit(function() {
-      var template = $('textarea[name=template]').val();
+      var template = cm.getValue();
       design.templates.default = template;
 
       $('button[form=edit-template]').text('Saving changes…').attr('disabled', true);

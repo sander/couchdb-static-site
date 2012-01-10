@@ -125,7 +125,7 @@ fieldset {
     }
     label {
       font-weight: bold;
-      * {
+      > * {
         margin-top: @spacing;
       }
     }
@@ -211,5 +211,17 @@ button, .button {
         font-size: 11px;
       }
     }
+  }
+}
+
+.CodeMirror {
+  background: #fff;
+  border: 1px solid #666;
+  cursor: text;
+  * {
+    font: 13px Consolas, 'DejaVu Sans Mono', monospace;
+  }
+  .CodeMirror-scroll {
+    height: 600px;
   }
 }
