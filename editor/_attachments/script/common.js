@@ -42,6 +42,7 @@ $(function() {
       add('edit-structure.html', 'Structure');
       add('edit-template.html', 'Template');
       add('edit-stylesheet.html', 'Style sheet');
+      add('edit-script.html', 'Common script');
       add('edit-media.html', 'Media');
     })();
 
