@@ -30,12 +30,18 @@ $(function() {
     (function() {
       var settings = section('Site settings');
       var ul = $('<ul class=select>').appendTo(settings);
-      var a = $('<a>').attr('href', 'edit-structure.html').appendTo(ul);
-      $('<li>').text('Structure').appendTo(a);
 
-      var parts = location.pathname.split('/');
-      if (parts[parts.length - 1] == 'edit-structure.html')
-        a.addClass('selected');
+      var add = function(url, title) {
+        var a = $('<a>').attr('href', url).appendTo(ul);
+        $('<li>').text(title).appendTo(a);
+        var parts = location.pathname.split('/');
+        if (parts[parts.length - 1] == url)
+          a.addClass('selected');
+      };
+
+      add('edit-structure.html', 'Structure');
+      add('edit-template.html', 'Template');
+
     })();
 
     (function() {
