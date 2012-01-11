@@ -35,6 +35,13 @@ function(head, req) {
 
   stash.url = 'http://' + host + '/' + ((doc._id != '*index') ? doc._id : '');
 
+  stash.capitalize = function() {
+    return function(text, render) {
+      var string = render(text);
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+  };
+
   var name = 'menu';
   for (var i in menus) {
     stash['has_' + name] = true;
