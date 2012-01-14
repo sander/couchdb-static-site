@@ -79,7 +79,9 @@ $(function() {
     form.find('[name=content]').val(doc.content);
 
     cm = CodeMirror.fromTextArea(form.find('[name=content]').get(0), {
-      lineWrapping: true
+      lineWrapping: true,
+      electricChars: false,
+      smartIndent: false
     });
 
     form.find('[name=summary]').val(doc.summary);
